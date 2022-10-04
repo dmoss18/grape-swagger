@@ -102,6 +102,8 @@ module Grape
 
         verb, method_object = method_object(route, options, path)
 
+        # require 'pry'
+        # binding.pry
         if @paths.key?(path.to_s)
           @paths[path.to_s][verb] = method_object
         else

@@ -12,6 +12,8 @@ module GrapeSwagger
 
           value_type = settings.merge(data_type: data_type, path: path, param_name: param, method: method)
 
+          # require 'pry'
+          # binding.pry
           # required properties
           @parsed_param = {
             in: param_type(value_type),
@@ -84,6 +86,8 @@ module GrapeSwagger
             value_type
           )
 
+          # require 'pry'
+          # binding.pry
           @parsed_param[:in] = param_type || 'formData'
           @parsed_param[:items] = array_items
           @parsed_param[:type] = 'array'

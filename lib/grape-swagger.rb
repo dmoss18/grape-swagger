@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'grape'
 
 require 'grape-swagger/instance'
@@ -141,6 +140,7 @@ module SwaggerDocumentationAdder
     exclusive_route_keys.each do |key|
       @target_class.combined_namespace_routes[key] = @target_class.combined_routes[key]
     end
+
     documentation_class
   end
 

@@ -17,17 +17,27 @@ module GrapeSwagger
           path_name = path.gsub(%r{/{(.+?)}}, '').split('/').last
           item = path_name.present? ? path_name.singularize.underscore.camelize : 'Item'
 
-          if route.version && options[:add_version]
-            version = GrapeSwagger::DocMethods::Version.get(route)
-            version = version.first while version.is_a?(Array)
-            path.sub!('{version}', version.to_s)
-          else
-            path.sub!('/{version}', '')
-          end
+          path = build_versioned_path(path, route, options)
 
           path = "#{OptionalObject.build(:base_path, options)}#{path}" if options[:add_base_path]
 
           [item, path.start_with?('/') ? path : "/#{path}"]
+        end
+
+        private
+
+        def build_versioned_path(path, route, options)
+          return path unless options[:add_version]
+
+          version = GrapeSwagger::DocMethods::Version.get_single(route)
+
+          if version.blank?
+            path.sub('/{version}', '')
+          elsif options[:path_versioning]
+            path.sub('{version}', version.to_s)
+          else
+            "#{path} (#{version})"
+          end
         end
       end
     end
